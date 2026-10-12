@@ -1,0 +1,22 @@
+{
+  "name": "smurti-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-first backend for Aajoba Memory.",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "migrate": "node src/db/migrate.js",
+    "test": "set NODE_ENV=test&& node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "mysql2": "^3.11.5"
+  }
+}
