@@ -24,7 +24,7 @@ test('health endpoint returns basic service status', async () => {
 
     assert.equal(response.status, 200);
     assert.equal(body.ok, true);
-    assert.equal(body.service, 'aajoba-memory-api');
+    assert.equal(body.service, 'smurti-api');
   });
 });
 

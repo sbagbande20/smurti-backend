@@ -2,7 +2,7 @@
   "name": "smurti-backend",
   "version": "0.1.0",
   "private": true,
-  "description": "Local-first backend for Aajoba Memory.",
+  "description": "Local-first backend for Smurti.",
   "type": "module",
   "scripts": {
     "start": "node src/server.js",

@@ -10,7 +10,7 @@ export function createHealthRouter(dependencies = {}) {
   router.get('/', (_request, response) => {
     response.json({
       ok: true,
-      service: 'aajoba-memory-api'
+      service: 'smurti-api'
     });
   });
 

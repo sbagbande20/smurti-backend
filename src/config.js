@@ -1,9 +1,11 @@
 import dotenv from 'dotenv';
 import path from 'node:path';
 
-dotenv.config();
+if (process.env.NODE_ENV !== 'test') {
+  dotenv.config();
+}
 
-const DEFAULT_MEDIA_ROOT = 'D:\\AajobaMemory\\media';
+const DEFAULT_MEDIA_ROOT = 'D:\\SmurtiData\\media';
 
 function readInteger(name, fallback) {
   const raw = process.env[name];
@@ -74,7 +76,7 @@ export function loadConfig() {
       }),
       database: readRequired('DB_NAME', {
         allowTestDefault: true,
-        testDefault: 'aajoba_memory_test'
+        testDefault: 'smurti_test'
       })
     },
     media: {

@@ -4,7 +4,7 @@ import { config } from './config.js';
 const app = createApp();
 
 const server = app.listen(config.api.port, config.api.host, () => {
-  console.info(`Aajoba Memory API listening on ${config.api.host}:${config.api.port}`);
+  console.info(`Smurti API listening on ${config.api.host}:${config.api.port}`);
 });
 
 function shutdown(signal) {

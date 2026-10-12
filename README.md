@@ -1,6 +1,6 @@
-# Aajoba Memory Backend
+# Smurti Backend
 
-Private, local-first backend for the Aajoba Memory Marathi memory companion.
+Private, local-first backend for the Smurti Marathi memory companion.
 
 Phase 1 includes:
 
@@ -47,10 +47,10 @@ Current local inspection on 2026-10-12:
 4. Create the local database and restricted user in MySQL. Example:
 
    ```sql
-   CREATE DATABASE aajoba_memory CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   CREATE USER 'aajoba_app'@'localhost' IDENTIFIED BY 'replace-with-local-db-password';
+   CREATE DATABASE smurti CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   CREATE USER 'smurti_app'@'localhost' IDENTIFIED BY 'replace-with-local-db-password';
    GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, REFERENCES
-     ON aajoba_memory.* TO 'aajoba_app'@'localhost';
+     ON smurti.* TO 'smurti_app'@'localhost';
    FLUSH PRIVILEGES;
    ```
 
