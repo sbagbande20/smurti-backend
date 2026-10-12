@@ -76,3 +76,64 @@ test('AI health reports missing local model without cloud fallback', async () =>
     assert.equal(body.reason, 'model_missing');
   });
 });
+
+test('media import endpoint requires authentication', async () => {
+  const app = createApp();
+
+  await withServer(app, async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/media/import`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ sourcePath: 'D:\\sample.wav' })
+    });
+    const body = await response.json();
+
+    assert.equal(response.status, 401);
+    assert.equal(body.error, 'unauthorized');
+  });
+});
+
+test('media import endpoint returns imported media metadata', async () => {
+  const app = createApp({
+    mediaService: {
+      async importFromPath(sourcePath) {
+        assert.equal(sourcePath, 'D:\\sample.wav');
+        return {
+          duplicate: false,
+          row: {
+            id: 1,
+            storage_path: 'aa/bb/example.wav',
+            original_filename: 'sample.wav',
+            media_type: 'audio',
+            mime_type: 'audio/wav',
+            checksum_sha256: 'a'.repeat(64),
+            size_bytes: 123,
+            imported_at: '2026-10-12T00:00:00.000Z'
+          }
+        };
+      },
+      async listMedia() {
+        return [];
+      }
+    }
+  });
+
+  await withServer(app, async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/media/import`, {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer test-token-with-at-least-32-characters',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ sourcePath: 'D:\\sample.wav' })
+    });
+    const body = await response.json();
+
+    assert.equal(response.status, 201);
+    assert.equal(body.media.originalFilename, 'sample.wav');
+    assert.equal(body.media.mediaType, 'audio');
+    assert.equal(body.media.duplicate, false);
+  });
+});

@@ -11,6 +11,14 @@ Phase 1 includes:
 - Local-only Ollama status integration with no cloud fallback.
 - Safe environment configuration examples.
 
+Phase 2 media import foundation includes:
+
+- Authenticated local-path media import endpoint.
+- Supported photo, audio, and video extension validation.
+- SHA-256 checksum duplicate detection.
+- Controlled copy into `MEDIA_ROOT`.
+- Media metadata storage in MySQL.
+
 ## Requirements
 
 - Node.js 20 or newer.
@@ -66,7 +74,7 @@ Current local inspection on 2026-10-12:
    npm start
    ```
 
-The API listens on `127.0.0.1:3000` unless changed in `.env`.
+The API listens on `localhost:5000` unless changed in `.env`.
 
 ## Health Checks
 
@@ -79,6 +87,27 @@ Protected API routes require:
 ```http
 Authorization: Bearer <API_TOKEN>
 ```
+
+## Media Import
+
+Import a local file from the Windows PC running the backend:
+
+```powershell
+$headers = @{
+  Authorization = "Bearer $env:SMURTI_API_TOKEN"
+  "Content-Type" = "application/json"
+}
+
+$body = @{
+  sourcePath = "D:\FamilySamples\recording.wav"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Method Post -Uri "http://localhost:5000/api/media/import" -Headers $headers -Body $body
+```
+
+Supported extensions: `.jpg`, `.jpeg`, `.png`, `.webp`, `.mp3`, `.wav`, `.m4a`, `.ogg`, `.mp4`, `.mov`, `.mkv`.
+
+The backend copies the file into `MEDIA_ROOT` and stores a relative controlled path in MySQL. Duplicate files are detected by SHA-256 checksum.
 
 ## Important Security Defaults
 

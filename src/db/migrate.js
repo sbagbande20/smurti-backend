@@ -57,7 +57,9 @@ export async function runMigrations(pool = createPool()) {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1].replace(/\\/g, '/')}`) {
+const isCli = process.argv[1] && path.resolve(process.argv[1]) === __filename;
+
+if (isCli) {
   const pool = createPool({ multipleStatements: false });
   runMigrations(pool)
     .then((executed) => {

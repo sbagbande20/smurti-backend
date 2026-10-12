@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import { config } from './config.js';
 import { requireApiToken } from './middleware/auth.js';
 import { createHealthRouter } from './routes/health.js';
+import { createMediaRouter } from './routes/media.js';
 
 export function createApp(dependencies = {}) {
   const app = express();
@@ -17,6 +18,7 @@ export function createApp(dependencies = {}) {
   app.get('/api/protected/ping', (_request, response) => {
     response.json({ ok: true });
   });
+  app.use('/api/media', createMediaRouter(dependencies));
 
   app.use((_request, response) => {
     response.status(404).json({ error: 'not_found' });

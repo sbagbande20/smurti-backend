@@ -59,8 +59,8 @@ export function loadConfig() {
   return {
     env: process.env.NODE_ENV || 'development',
     api: {
-      host: process.env.API_HOST || '127.0.0.1',
-      port: readInteger('API_PORT', 3000),
+      host: process.env.API_HOST || 'localhost',
+      port: readInteger('API_PORT', 5000),
       token: apiToken
     },
     db: {
@@ -80,7 +80,8 @@ export function loadConfig() {
       })
     },
     media: {
-      root: normalizeMediaRoot(process.env.MEDIA_ROOT)
+      root: normalizeMediaRoot(process.env.MEDIA_ROOT),
+      maxBytes: readInteger('MEDIA_MAX_BYTES', 524288000)
     },
     ai: {
       ollamaBaseUrl: assertLocalUrl(

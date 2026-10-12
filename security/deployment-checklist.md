@@ -38,6 +38,8 @@ Complete this checklist before importing real family memories or enabling phone 
 
 - [ ] Unauthorized `/api/*` requests return `401`.
 - [ ] File path traversal checks are tested.
+- [ ] Media import accepts only supported formats.
+- [ ] Media duplicate detection is tested with sample files.
 - [ ] Oversized request bodies are rejected.
 - [ ] Client-facing errors do not expose stack traces or sensitive paths.
 - [ ] Sample data is used before importing the full archive.
