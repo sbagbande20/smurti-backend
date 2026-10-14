@@ -2,6 +2,19 @@ import { createPool } from '../db/pool.js';
 
 export function createMediaFilesRepository(pool = createPool()) {
   return {
+    async findById(id) {
+      const [rows] = await pool.execute(
+        `SELECT id, storage_path, original_filename, media_type, mime_type,
+                checksum_sha256, size_bytes, imported_at
+           FROM media_files
+          WHERE id = ?
+          LIMIT 1`,
+        [id]
+      );
+
+      return rows[0] || null;
+    },
+
     async findByChecksum(checksum) {
       const [rows] = await pool.execute(
         `SELECT id, storage_path, original_filename, media_type, mime_type,

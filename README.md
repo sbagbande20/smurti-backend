@@ -18,6 +18,8 @@ Phase 2 media import foundation includes:
 - SHA-256 checksum duplicate detection.
 - Controlled copy into `MEDIA_ROOT`.
 - Media metadata storage in MySQL.
+- Memory creation/list/detail/update endpoints.
+- Linking imported media files to memories.
 
 ## Requirements
 
@@ -108,6 +110,37 @@ Invoke-RestMethod -Method Post -Uri "http://localhost:5000/api/media/import" -He
 Supported extensions: `.jpg`, `.jpeg`, `.png`, `.webp`, `.mp3`, `.wav`, `.m4a`, `.ogg`, `.mp4`, `.mov`, `.mkv`.
 
 The backend copies the file into `MEDIA_ROOT` and stores a relative controlled path in MySQL. Duplicate files are detected by SHA-256 checksum.
+
+## Memories
+
+Create a memory:
+
+```powershell
+$body = @{
+  title = "आजोबांची आठवण"
+  description = "sample.jpg साठी चाचणी आठवण"
+  tags = @("कुटुंब", "चाचणी")
+} | ConvertTo-Json
+
+Invoke-RestMethod -Method Post -Uri "http://localhost:5000/api/memories" -Headers $headers -Body $body
+```
+
+Link imported media ID `1` to memory ID `1`:
+
+```powershell
+$body = @{
+  mediaFileId = 1
+  notes = "मुख्य फोटो"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Method Post -Uri "http://localhost:5000/api/memories/1/sources" -Headers $headers -Body $body
+```
+
+View a memory with its linked sources:
+
+```powershell
+Invoke-RestMethod -Method Get -Uri "http://localhost:5000/api/memories/1" -Headers $headers
+```
 
 ## Important Security Defaults
 

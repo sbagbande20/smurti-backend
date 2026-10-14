@@ -40,6 +40,8 @@ Complete this checklist before importing real family memories or enabling phone 
 - [ ] File path traversal checks are tested.
 - [ ] Media import accepts only supported formats.
 - [ ] Media duplicate detection is tested with sample files.
+- [ ] Memory creation accepts Marathi Unicode text correctly.
+- [ ] Memory-source links reject missing media IDs.
 - [ ] Oversized request bodies are rejected.
 - [ ] Client-facing errors do not expose stack traces or sensitive paths.
 - [ ] Sample data is used before importing the full archive.

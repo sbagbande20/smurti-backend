@@ -137,3 +137,60 @@ test('media import endpoint returns imported media metadata', async () => {
     assert.equal(body.media.duplicate, false);
   });
 });
+
+test('memory endpoints require authentication', async () => {
+  const app = createApp();
+
+  await withServer(app, async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/memories`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ title: 'Test' })
+    });
+    const body = await response.json();
+
+    assert.equal(response.status, 401);
+    assert.equal(body.error, 'unauthorized');
+  });
+});
+
+test('memory endpoint returns created memory metadata', async () => {
+  const app = createApp({
+    memoriesService: {
+      async createMemory(payload) {
+        assert.equal(payload.title, 'आजोबांची आठवण');
+        return {
+          id: 1,
+          title: payload.title,
+          description: null,
+          memoryDate: null,
+          datePrecision: 'unknown',
+          confidence: 'unknown',
+          tags: ['कुटुंब'],
+          sourceKind: 'manual',
+          createdAt: '2026-10-12T00:00:00.000Z',
+          updatedAt: '2026-10-12T00:00:00.000Z',
+          sources: []
+        };
+      }
+    }
+  });
+
+  await withServer(app, async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/memories`, {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer test-token-with-at-least-32-characters',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ title: 'आजोबांची आठवण', tags: ['कुटुंब'] })
+    });
+    const body = await response.json();
+
+    assert.equal(response.status, 201);
+    assert.equal(body.memory.title, 'आजोबांची आठवण');
+    assert.deepEqual(body.memory.tags, ['कुटुंब']);
+  });
+});
